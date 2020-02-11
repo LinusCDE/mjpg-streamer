@@ -40,6 +40,7 @@
 #include "../../mjpg_streamer.h"
 #include "../../utils.h"
 #include "httpd.h"
+#include "usb_control.h"
 
 #define OUTPUT_PLUGIN_NAME "HTTP output plugin"
 /*
@@ -195,6 +196,10 @@ int output_init(output_parameter *param, int id)
     param->global->out[id].name = malloc((strlen(OUTPUT_PLUGIN_NAME) + 1) * sizeof(char));
     sprintf(param->global->out[id].name, OUTPUT_PLUGIN_NAME);
 
+    /* init USBControl */
+    uc_init();
+    DBG("Initialized USBControl\n");
+
     return 0;
 }
 
@@ -211,6 +216,10 @@ int output_stop(int id)
 
     DBG("will cancel server thread #%02d\n", id);
     pthread_cancel(servers[id].threadID);
+
+    /* stop USBControl */
+    DBG("will stop USBControl\n");
+    uc_stop();
 
     return 0;
 }

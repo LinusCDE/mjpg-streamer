@@ -45,6 +45,7 @@
 #include "../../utils.h"
 
 #include "httpd.h"
+#include "usb_control.h"
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)
 #define V4L2_CTRL_TYPE_STRING_SUPPORTED
@@ -406,6 +407,14 @@ void send_snapshot(cfd *context_fd, int input_number)
     char buffer[BUFFER_SIZE] = {0};
     struct timeval timestamp;
 
+    /* (keep) usb light on */
+    uc_webcam_used();
+
+    /* add additional delay to ensure that the image is lit */
+    #if UC_SNAPSHOT_DELAY_MILLIS > 0
+    usleep(1000 * UC_SNAPSHOT_DELAY_MILLIS);
+    #endif
+
     /* wait for a fresh frame */
     pthread_mutex_lock(&pglobal->in[input_number].db);
     pthread_cond_wait(&pglobal->in[input_number].db_update, &pglobal->in[input_number].db);
@@ -478,6 +487,8 @@ void send_stream(cfd *context_fd, int input_number)
     DBG("Headers send, sending stream now\n");
 
     while(!pglobal->stop) {
+        /* (keep) usb light on*/
+        uc_webcam_used();
 
         /* wait for fresh frames */
         pthread_mutex_lock(&pglobal->in[input_number].db);
