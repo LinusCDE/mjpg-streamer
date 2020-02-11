@@ -259,7 +259,7 @@ int main(int argc, char *argv[])
         daemon_mode();
     }
 
-    /* ignore SIGPIPE (send by OS if transmitting to closed TCP sockets) */
+    /* ignore SIGPIPE (sent by OS if transmitting to closed TCP sockets) */
     signal(SIGPIPE, SIG_IGN);
 
     /* register signal handler for <CTRL>+C in order to clean up */
