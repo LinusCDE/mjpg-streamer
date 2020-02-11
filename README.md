@@ -1,6 +1,10 @@
 mjpg-streamer
 =============
 
+Fork of https://github.com/jacksonliam/mjpg-streamer.
+
+This extends the output_http plugin to allow a hacky flashlight. For more see the [relevant commit](https://github.com/LinusCDE/mjpg-streamer/commit/e05df0f441cf77dab29fa9172051ed628f2232a5).
+
 This is a fork of http://sourceforge.net/projects/mjpg-streamer/ with added support for the Raspberry Pi camera via the input_raspicam plugin.
 
 mjpg-streamer is a command line application that copies JPEG frames from one
